@@ -5,11 +5,16 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.Logger;
 import com.badlogic.gdx.utils.TimeUtils;
+
+/**
+ * Describe object particle. Allows spawn particle each one second
+ * and set coordinates objects for movement.
+ */
 
 public class ParticleBright {
 
+    //Declare references, which determine size particles.
     protected Rectangle obj;
     protected Rectangle obj1;
     protected Rectangle obj2;
@@ -39,10 +44,14 @@ public class ParticleBright {
 
     //...
 
+    //Determine texture for particles.
     public Texture mainTexture;
+    //Need for play sound.
     public Sound clickAudioPlay;
+    //Have list in Rectangles.
     public Array<Rectangle> listRectangle;
 
+    //Determine time last spawn particle.
     private static long dropTime;
 
     public ParticleBright(String pathToTexture, String pathToAudioFile){
@@ -81,8 +90,17 @@ public class ParticleBright {
         dropTime = 0;
     }
 
-    public void spawn(float pos1, float pos2){
+    /**
+     * Create particle and set they coordinate. Put their in Array, play sound.
+     *
+     * @param pos1
+     *          x with screen
+     * @param pos2
+     *          y with screen
+     */
 
+    public void spawn(float pos1, float pos2){
+        //Set configuration each object.
         obj.x = pos1;
         obj.y = pos2;
         obj.height = 5;
@@ -97,11 +115,6 @@ public class ParticleBright {
         obj2.y = pos2;
         obj2.height = 5;
         obj2.width = 5;
-
-        obj3.x = pos1;
-        obj3.y = pos2;
-        obj3.height = 5;
-        obj3.width = 5;
 
         obj3.x = pos1;
         obj3.y = pos2;
@@ -218,6 +231,7 @@ public class ParticleBright {
         obj.height = 5;
         obj.width = 5;
 
+        //Add all objects to array.
         listRectangle.add(obj);
         listRectangle.add(obj1);
         listRectangle.add(obj2);
@@ -245,10 +259,18 @@ public class ParticleBright {
         listRectangle.add(obj24);
         listRectangle.add(obj25);
 
+        //Receive time spawn.
         dropTime = TimeUtils.nanoTime();
         Gdx.app.log("ParticleBright: ", "Play audio file.");
         clickAudioPlay.play();
     }
+
+    /**
+     * Check, how many time passed after spawn particles.
+     *
+     * @return
+     *      If passed one second, return true otherwise false.
+     */
 
     public boolean isSleep(){
         if (TimeUtils.nanoTime() - dropTime > 1000000000L){
@@ -257,6 +279,10 @@ public class ParticleBright {
         }
         return false;
     }
+
+    /**
+     * Set coordinate each object, what be object movement in right destination.
+     */
 
     public void moveParticles(){
 
@@ -345,7 +371,5 @@ public class ParticleBright {
 
         obj11.x += 30 * Gdx.graphics.getDeltaTime();
         obj11.y -= 152 * Gdx.graphics.getDeltaTime();
-
     }
-
 }
