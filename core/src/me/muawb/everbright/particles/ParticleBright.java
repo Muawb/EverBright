@@ -5,14 +5,17 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.TimeUtils;
 
 /**
  * Describe object particle. Allows spawn particle each one second
  * and set coordinates objects for movement.
+ * Implements functionality interface {@link Disposable} which contain
+ * method {@link this#dispose()}, which enable dispose object of memory.
  */
 
-public class ParticleBright {
+public class ParticleBright implements Disposable {
 
     //Declare references, which determine size particles.
     protected Rectangle obj;
@@ -45,11 +48,11 @@ public class ParticleBright {
     //...
 
     //Determine texture for particles.
-    public Texture mainTexture;
+    private Texture mainTexture;
     //Need for play sound.
-    public Sound clickAudioPlay;
+    private Sound clickAudioPlay;
     //Have list in Rectangles.
-    public Array<Rectangle> listRectangle;
+    private Array<Rectangle> listRectangle;
 
     //Determine time last spawn particle.
     private static long dropTime;
@@ -285,7 +288,6 @@ public class ParticleBright {
      */
 
     public void moveParticles(){
-
         obj.x -= 30 * Gdx.graphics.getDeltaTime();
         obj.y -= 152 * Gdx.graphics.getDeltaTime();
 
@@ -371,5 +373,33 @@ public class ParticleBright {
 
         obj11.x += 30 * Gdx.graphics.getDeltaTime();
         obj11.y -= 152 * Gdx.graphics.getDeltaTime();
+    }
+
+    /**
+     * Return object {@code mainTexture}
+     * @return
+     */
+
+    public Texture getMainTexture() {
+        return mainTexture;
+    }
+
+    /**
+     * Return object {@code listRectangle}
+     * @return
+     */
+
+    public Array<Rectangle> getListRectangle() {
+        return listRectangle;
+    }
+
+    /**
+     * Enable dispose object of memory.
+     */
+
+    @Override
+    public void dispose() {
+        mainTexture.dispose();
+        clickAudioPlay.dispose();
     }
 }

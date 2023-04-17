@@ -64,20 +64,54 @@ public class EverBright extends ApplicationAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         //Set coordinates.
-        coordinateVector.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-        mainCamera.unproject(coordinateVector);
-        //Defined matrix for SpriteBatch.
-        batch.setProjectionMatrix(mainCamera.combined);
-        mainCamera.update();
+        setCoordinates(Gdx.input.getX(), Gdx.input.getY(), 0);
+        //Defined matrix for SpriteBatch and update it.
+        update();
 
         //Draw.
-        batch.begin();
-        for (Rectangle rect: particle.listRectangle){
-            batch.draw(particle.mainTexture, rect.x, rect.y);
-        }
-        batch.end();
+        draw();
 
         particle.moveParticles();
+    }
+
+    /**
+     * Update matrix which contain SpriteBatch.
+     */
+
+    public void update(){
+        batch.setProjectionMatrix(mainCamera.combined);
+        mainCamera.update();
+    }
+
+    /**
+     * With use Vector3 we very definitely specify a coordinate from the screen.
+     *
+     * @param x
+     *      x coordinate
+     * @param y
+     *      y coordinate
+     * @param z
+     *      z coordinate
+     */
+
+    public void setCoordinates(int x, int y, int z){
+        //Set coordinate.
+        coordinateVector.set(x, y, z);
+        //Put their in matrix.
+        mainCamera.unproject(coordinateVector);
+    }
+
+    /**
+     * This is method enable a draw object and texture with use SpriteBatch.
+     * Here we do iteration for Collection which contain of Rectangle, and draw it.
+     */
+
+    public void draw(){
+        batch.begin(); // Start draw.
+        for (Rectangle rect : particle.getListRectangle()){
+            batch.draw(particle.getMainTexture(), rect.x, rect.y);
+        }
+        batch.end(); // End draw.
     }
 
     /**
@@ -87,6 +121,6 @@ public class EverBright extends ApplicationAdapter {
     @Override
     public void dispose() {
         batch.dispose();
-        particle.mainTexture.dispose();
+        particle.dispose();
     }
 }
